@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmer Dashboard - Animal Health Advisory System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="./advaFarm.css">
+    <style>
+        /* Ensure proper stacking context */
+        body.modal-open {
+            overflow: hidden;
+        }
+        
+        /* Force higher z-index for nested modals */
+        .modal.modal-on-top {
+            z-index: 20000 !important;
+        }
+        
+        .modal.modal-on-top .modal-container {
+            z-index: 20001 !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Mobile Header -->
+    <header class="mobile-header">
+        <div class="mobile-header-content">
+            <button class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <h1 class="logo">FarmCare<span>Dashboard</span></h1>
+            <div class="user-profile">
+                <div class="notification-icon" id="mobileNotificationIcon">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-count">5</span>
+                </div>
+                <span>John Farmer</span>
+                <div class="avatar">JF</div>
+            </div>
+        </div>
+    </header>
+
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="user-info">
+                    <div class="avatar-large">JF</div>
+                    <div class="user-details">
+                        <h2>John Farmer</h2>
+                        <p class="user-role">Farm Owner</p>
+                    </div>
+                </div>
+                <button class="close-menu" id="closeMenu">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active" id="dashboardOverview">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" class="nav-item" id="bookAppointmentNav">
+                    <i class="fas fa-calendar-plus"></i>
+                    <span>Book Appointment</span>
+                </a>
+                <a href="#" class="nav-item" id="myQuestionsNav">
+                    <i class="fas fa-question-circle"></i>
+                    <span>My Questions</span>
+                    <span class="notification-badge" id="questionsBadge">3</span>
+                </a>
+                <a href="#" class="nav-item" id="newsNav">
+                    <i class="fas fa-newspaper"></i>
+                    <span>News & Events</span>
+                </a>
+                <a href="#" class="nav-item" id="resourcesNav">
+                    <i class="fas fa-book-medical"></i>
+                    <span>Resources</span>
+                </a>
+                <a href="#" class="nav-item" id="myFarmNav">
+                    <i class="fas fa-tractor"></i>
+                    <span>My Farm</span>
+                </a>
+                <a href="#" class="nav-item" id="notificationsNav">
+                    <i class="fas fa-bell"></i>
+                    <span>Notifications</span>
+                    <span class="notification-badge" id="notificationsBadge">8</span>
+                </a>
+                <a href="#" class="nav-item" id="accountNav">
+                    <i class="fas fa-user-cog"></i>
+                    <span>Account</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="stats-card">
+                    <h4>Today's Stats</h4>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <i class="fas fa-clock"></i>
+                            <div>
+                                <p class="stat-number" id="todayAppointments">2</p>
+                                <p class="stat-label">Appointments</p>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-cow"></i>
+                            <div>
+                                <p class="stat-number" id="todayAnimals">24</p>
+                                <p class="stat-label">Animals</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content" id="contentArea">
+            <div class="content-header">
+                <h1 class="page-title">Dashboard</h1>
+                <div class="header-actions" id="headerActions">
+                    <!-- Buttons will be added dynamically based on section -->
+                    <div class="date-display">
+                        <i class="fas fa-calendar-day"></i>
+                        <span id="currentDate"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Default Dashboard Content -->
+            <div class="dashboard-overview">
+                <div class="welcome-card">
+                    <div class="welcome-content">
+                        <h2>Welcome back, John!</h2>
+                        <p>You have <strong id="upcomingAppointmentsCount">2</strong> upcoming appointments and <strong id="pendingQuestionsCount">3</strong> unanswered questions.</p>
+                        <div class="weather-info">
+                            <i class="fas fa-sun"></i>
+                            <span>Sunny, 24°C - Good weather for farm work</span>
+                        </div>
+                    </div>
+                    <div class="welcome-illustration">
+                        <i class="fas fa-tractor"></i>
+                    </div>
+                </div>
+
+                <div class="quick-stats">
+                    <div class="stat-card stat-primary">
+                        <i class="fas fa-calendar-alt"></i>
+                        <div>
+                            <h3>12</h3>
+                            <p>Monthly Appointments</p>
+                        </div>
+                    </div>
+                    <div class="stat-card stat-success">
+                        <i class="fas fa-check-circle"></i>
+                        <div>
+                            <h3>8</h3>
+                            <p>Answered Questions</p>
+                        </div>
+                    </div>
+                    <div class="stat-card stat-warning">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <div>
+                            <h3>5</h3>
+                            <p>Health Alerts</p>
+                        </div>
+                    </div>
+                    <div class="stat-card stat-info">
+                        <i class="fas fa-cow"></i>
+                        <div>
+                            <h3>24</h3>
+                            <p>Total Animals</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="quick-actions">
+                    <h2 class="section-title">Quick Actions</h2>
+                    <div class="actions-grid">
+                        <button class="action-card" id="quickBookAppointment">
+                            <i class="fas fa-calendar-plus"></i>
+                            <span>Book Appointment</span>
+                        </button>
+                        <button class="action-card" id="quickAskQuestion">
+                            <i class="fas fa-question-circle"></i>
+                            <span>Ask Question</span>
+                        </button>
+                        <button class="action-card" id="quickAddAnimal">
+                            <i class="fas fa-plus-circle"></i>
+                            <span>Add Animal</span>
+                        </button>
+                        <button class="action-card" id="quickViewMarket">
+                            <i class="fas fa-chart-line"></i>
+                            <span>Market Prices</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Upcoming Appointments -->
+                <div class="upcoming-section">
+                    <h2 class="section-title">Upcoming Appointments</h2>
+                    <div class="appointments-list" id="upcomingAppointmentsList">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scroll Indicator for Mobile -->
+    <div class="scroll-indicator" id="scrollIndicator">
+        <span>Scroll to view more</span>
+        <i class="fas fa-chevron-right"></i>
+    </div>
+
+    <!-- ==================== MODALS ==================== -->
+
+    <!-- Book Appointment Modal -->
+    <div id="bookAppointmentModal" class="modal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 class="modal-title">Book New Appointment</h3>
+                <button class="modal-close" onclick="closeModal('bookAppointmentModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="bookAppointmentForm">
+                    <div class="form-group">
+                        <label for="vetSelection">Select Veterinarian *</label>
+                        <select id="vetSelection" name="vetId" required>
+                            <option value="">Choose veterinarian</option>
+                            <option value="vet1">Dr. Thomas - Large Animal Specialist</option>
+                            <option value="vet2">Dr. Smith - Poultry Specialist</option>
+                            <option value="vet3">Dr. Johnson - Dairy Specialist</option>
+                            <option value="vet4">Dr. Wilson - General Practice</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="appointmentDate">Date *</label>
+                        <input type="date" id="appointmentDate" name="date" required min="">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="appointmentTime">Time *</label>
+                        <select id="appointmentTime" name="time" required>
+                            <option value="">Select time</option>
+                            <option value="09:00">09:00 AM</option>
+                            <option value="10:00">10:00 AM</option>
+                            <option value="11:00">11:00 AM</option>
+                            <option value="14:00">02:00 PM</option>
+                            <option value="15:00">03:00 PM</option>
+                            <option value="16:00">04:00 PM</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="animalSelection">Select Animal *</label>
+                        <select id="animalSelection" name="animalId" required>
+                            <option value="">Choose animal</option>
+                            <!-- Will be populated by JavaScript -->
+                        </select>
+                        <small class="form-text">Can't find your animal? <a href="#" onclick="closeModal('bookAppointmentModal'); showAddAnimalModal();">Add new animal</a></small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="appointmentReason">Reason for Appointment *</label>
+                        <textarea id="appointmentReason" name="reason" required rows="4" placeholder="Describe the symptoms or reason for consultation"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="appointmentUrgency">Urgency Level</label>
+                        <select id="appointmentUrgency" name="urgency">
+                            <option value="routine">Routine Checkup</option>
+                            <option value="urgent">Urgent - Within 24 hours</option>
+                            <option value="emergency">Emergency - Immediate attention needed</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="appointmentLocation">Preferred Location</label>
+                        <select id="appointmentLocation" name="location">
+                            <option value="clinic">Veterinary Clinic</option>
+                            <option value="farm">Farm Visit</option>
+                            <option value="virtual">Virtual Consultation</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" onclick="closeModal('bookAppointmentModal')">Cancel</button>
+                        <button type="submit" class="btn-primary">Book Appointment</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ask Question Modal -->
+    <div id="askQuestionModal" class="modal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 class="modal-title">Ask a Question</h3>
+                <button class="modal-close" onclick="closeModal('askQuestionModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="askQuestionForm">
+                    <div class="form-group">
+                        <label for="questionSubject">Subject *</label>
+                        <input type="text" id="questionSubject" name="subject" required placeholder="Brief description of your question">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="questionCategory">Category *</label>
+                        <select id="questionCategory" name="category" required>
+                            <option value="">Select category</option>
+                            <option value="health">Animal Health</option>
+                            <option value="nutrition">Nutrition & Feeding</option>
+                            <option value="breeding">Breeding & Reproduction</option>
+                            <option value="disease">Disease Prevention</option>
+                            <option value="treatment">Treatment Advice</option>
+                            <option value="management">Farm Management</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="questionAnimal">Related Animal (Optional)</label>
+                        <select id="questionAnimal" name="animalId">
+                            <option value="">Select animal (optional)</option>
+                            <!-- Will be populated by JavaScript -->
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="questionDetails">Question Details *</label>
+                        <div class="rich-text-editor">
+                            <div class="editor-toolbar">
+                                <button type="button" class="toolbar-btn" data-command="bold" title="Bold">
+                                    <i class="fas fa-bold"></i>
+                                </button>
+                                <button type="button" class="toolbar-btn" data-command="italic" title="Italic">
+                                    <i class="fas fa-italic"></i>
+                                </button>
+                                <button type="button" class="toolbar-btn" data-command="insertUnorderedList" title="Bullet List">
+                                    <i class="fas fa-list-ul"></i>
+                                </button>
+                            </div>
+                            <div id="questionDetails" class="editor-body" contenteditable="true" data-placeholder="Describe your question in detail. Include symptoms, duration, and any treatments you've tried..."></div>
+                            <input type="hidden" name="details" id="questionDetailsHidden">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="questionAttachments">Attachments (Optional)</label>
+                        <div class="file-upload">
+                            <input type="file" id="questionAttachments" name="attachments" multiple accept="image/*,.pdf,.doc,.docx">
+                            <label for="questionAttachments" class="file-upload-label">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <span>Add photos or documents</span>
+                            </label>
+                            <div class="attachments-list" id="questionAttachmentsList"></div>
+                        </div>
+                        <small class="form-text">Upload photos of the animal or symptoms for better diagnosis</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="questionUrgency">Urgency</label>
+                        <select id="questionUrgency" name="urgency">
+                            <option value="normal">Normal - Response within 48 hours</option>
+                            <option value="urgent">Urgent - Response within 24 hours</option>
+                            <option value="emergency">Emergency - Call veterinarian directly</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" onclick="closeModal('askQuestionModal')">Cancel</button>
+                        <button type="submit" class="btn-primary">
+                            <i class="fas fa-paper-plane"></i> Submit Question
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Animal Modal -->
+    <div id="addAnimalModal" class="modal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 class="modal-title">Add New Animal</h3>
+                <button class="modal-close" onclick="closeModal('addAnimalModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="addAnimalForm">
+                    <div class="form-group">
+                        <label for="animalName">Animal Name/Nickname *</label>
+                        <input type="text" id="animalName" name="name" required placeholder="e.g., Daisy, Bessie, Big Boy">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="animalType">Animal Type *</label>
+                        <select id="animalType" name="type" required>
+                            <option value="">Select type</option>
+                            <option value="cow">Cow</option>
+                            <option value="buffalo">Buffalo</option>
+                            <option value="goat">Goat</option>
+                            <option value="sheep">Sheep</option>
+                            <option value="chicken">Chicken</option>
+                            <option value="pig">Pig</option>
+                            <option value="horse">Horse</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="animalBreed">Breed (Optional)</label>
+                        <input type="text" id="animalBreed" name="breed" placeholder="e.g., Holstein, Saanen, Rhode Island Red">
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="animalAge">Age *</label>
+                            <input type="number" id="animalAge" name="age" required min="0" step="0.5" placeholder="Years">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="animalGender">Gender *</label>
+                            <select id="animalGender" name="gender" required>
+                                <option value="">Select gender</option>
+                                <option value="female">Female</option>
+                                <option value="male">Male</option>
+                                <option value="castrated">Castrated Male</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="animalWeight">Weight (kg) (Optional)</label>
+                        <input type="number" id="animalWeight" name="weight" min="0" placeholder="e.g., 450">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="animalColor">Color/Markings (Optional)</label>
+                        <input type="text" id="animalColor" name="color" placeholder="e.g., Black & White, Brown">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="animalTag">Tag/ID Number (Optional)</label>
+                        <input type="text" id="animalTag" name="tag" placeholder="e.g., Farm-001, Ear Tag #123">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="animalHealthStatus">Current Health Status</label>
+                        <select id="animalHealthStatus" name="healthStatus">
+                            <option value="healthy">Healthy</option>
+                            <option value="monitoring">Under Monitoring</option>
+                            <option value="treatment">Under Treatment</option>
+                            <option value="critical">Critical Condition</option>
+                            <option value="recovering">Recovering</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="animalNotes">Notes (Optional)</label>
+                        <textarea id="animalNotes" name="notes" rows="3" placeholder="Any special notes about this animal..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="animalPhoto">Photo (Optional)</label>
+                        <div class="file-upload">
+                            <input type="file" id="animalPhoto" name="photo" accept="image/*">
+                            <label for="animalPhoto" class="file-upload-label">
+                                <i class="fas fa-camera"></i>
+                                <span>Upload animal photo</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" onclick="closeModal('addAnimalModal')">Cancel</button>
+                        <button type="submit" class="btn-primary">Add Animal</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Animal Modal -->
+    <div id="editAnimalModal" class="modal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 class="modal-title">Edit Animal</h3>
+                <button class="modal-close" onclick="closeModal('editAnimalModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Content will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Farm Details Modal -->
+    <div id="farmDetailsModal" class="modal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 class="modal-title">Farm Details</h3>
+                <button class="modal-close" onclick="closeModal('farmDetailsModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="farmDetailsForm">
+                    <div class="form-group">
+                        <label for="farmName">Farm Name *</label>
+                        <input type="text" id="farmName" name="name" required value="Green Valley Farm">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="farmType">Farm Type *</label>
+                        <select id="farmType" name="type" required>
+                            <option value="dairy">Dairy Farm</option>
+                            <option value="poultry">Poultry Farm</option>
+                            <option value="mixed">Mixed Livestock</option>
+                            <option value="beef">Beef Cattle</option>
+                            <option value="goat">Goat Farm</option>
+                            <option value="sheep">Sheep Farm</option>
+                            <option value="pig">Pig Farm</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="farmSize">Farm Size (acres) *</label>
+                        <input type="number" id="farmSize" name="size" required min="0" step="0.1" value="25">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="farmLocation">Location *</label>
+                        <input type="text" id="farmLocation" name="location" required value="Rural District, County">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="farmAddress">Full Address *</label>
+                        <textarea id="farmAddress" name="address" required rows="3">123 Farm Road, Rural District, County, State 12345</textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="farmEstablished">Year Established</label>
+                        <input type="number" id="farmEstablished" name="established" min="1900" max="2024" value="1995">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="farmContact">Contact Number *</label>
+                        <input type="tel" id="farmContact" name="contact" required value="+1234567890">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="farmEmail">Email Address</label>
+                        <input type="email" id="farmEmail" name="email" value="john@greenvalleyfarm.com">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="farmDescription">Farm Description</label>
+                        <textarea id="farmDescription" name="description" rows="4" placeholder="Describe your farm operations...">Family-owned dairy farm specializing in organic milk production with 24 Holstein cows.</textarea>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" onclick="closeModal('farmDetailsModal')">Cancel</button>
+                        <button type="submit" class="btn-primary">Save Details</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Emergency Contacts Modal -->
+    <div id="emergencyContactsModal" class="modal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 class="modal-title">Emergency Contacts</h3>
+                <button class="modal-close" onclick="closeModal('emergencyContactsModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="emergency-contacts-list" id="emergencyContactsList">
+                    <!-- Contacts will be populated by JavaScript -->
+                </div>
+                
+                <button class="btn-primary" id="addEmergencyContactBtn" style="margin-top: 1.5rem;">
+                    <i class="fas fa-plus"></i> Add Emergency Contact
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Emergency Contact Modal -->
+    <div id="editEmergencyContactModal" class="modal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 class="modal-title" id="emergencyContactModalTitle">Add Emergency Contact</h3>
+                <button class="modal-close" onclick="closeModal('editEmergencyContactModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editEmergencyContactForm">
+                    <div class="form-group">
+                        <label for="contactName">Contact Name *</label>
+                        <input type="text" id="contactName" name="name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="contactRelationship">Relationship *</label>
+                        <select id="contactRelationship" name="relationship" required>
+                            <option value="">Select relationship</option>
+                            <option value="veterinarian">Veterinarian</option>
+                            <option value="neighbor">Neighbor Farmer</option>
+                            <option value="family">Family Member</option>
+                            <option value="friend">Friend</option>
+                            <option value="emergency_service">Emergency Service</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="contactPhone">Phone Number *</label>
+                        <input type="tel" id="contactPhone" name="phone" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="contactAltPhone">Alternate Phone (Optional)</label>
+                        <input type="tel" id="contactAltPhone" name="altPhone">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="contactType">Contact Type *</label>
+                        <select id="contactType" name="type" required>
+                            <option value="medical">Medical Emergency</option>
+                            <option value="equipment">Equipment Emergency</option>
+                            <option value="general">General Emergency</option>
+                            <option value="animal_escape">Animal Escape</option>
+                            <option value="fire">Fire Emergency</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="contactNotes">Notes (Optional)</label>
+                        <textarea id="contactNotes" name="notes" rows="3" placeholder="Any additional information..."></textarea>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" onclick="closeModal('editEmergencyContactModal')">Cancel</button>
+                        <button type="submit" class="btn-primary" id="emergencyContactSubmitBtn">Save Contact</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Market Prices Modal -->
+    <div id="marketPricesModal" class="modal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 class="modal-title">Market Prices</h3>
+                <button class="modal-close" onclick="closeModal('marketPricesModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="market-prices-content">
+                    <div class="market-update-time">
+                        <i class="fas fa-sync-alt"></i>
+                        <span>Last updated: Today, 09:00 AM</span>
+                    </div>
+                    
+                    <div class="market-prices-grid" id="marketPricesGrid">
+                        <!-- Prices will be populated by JavaScript -->
+                    </div>
+                    
+                    <div class="market-trends">
+                        <h4>Market Trends</h4>
+                        <div class="trends-chart-placeholder">
+                            <i class="fas fa-chart-line"></i>
+                            <p>Market trend visualization would appear here</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Account Modal (Farmer Specific) -->
+    <div id="editAccountModal" class="modal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 class="modal-title">Edit Account Information</h3>
+                <button class="modal-close" onclick="closeModal('editAccountModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editAccountForm">
+                    <div class="form-group">
+                        <label for="accountAvatar">Profile Picture</label>
+                        <div class="avatar-upload">
+                            <div class="avatar-preview" id="avatarPreview">
+                                <div class="avatar-preview-image">JF</div>
+                            </div>
+                            <input type="file" id="accountAvatar" name="avatar" accept="image/*" class="avatar-input">
+                            <label for="accountAvatar" class="avatar-upload-label">
+                                <i class="fas fa-camera"></i> Change Photo
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="accountName">Full Name *</label>
+                        <input type="text" id="accountName" name="name" required value="John Farmer">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="accountEmail">Email *</label>
+                        <input type="email" id="accountEmail" name="email" required value="john.farmer@example.com">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="accountPhone">Phone *</label>
+                        <input type="tel" id="accountPhone" name="phone" required value="+1234567890">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="accountFarmName">Farm Name *</label>
+                        <input type="text" id="accountFarmName" name="farmName" required value="Green Valley Farm">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="accountFarmType">Farm Type</label>
+                        <input type="text" id="accountFarmType" name="farmType" value="Dairy Farm">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="accountLocation">Location</label>
+                        <input type="text" id="accountLocation" name="location" value="Rural District, County">
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" onclick="closeModal('editAccountModal')">Cancel</button>
+                        <button type="submit" class="btn-primary">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Change Password Modal (Same as vet) -->
+    <div id="changePasswordModal" class="modal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 class="modal-title">Change Password</h3>
+                <button class="modal-close" onclick="closeModal('changePasswordModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="changePasswordForm">
+                    <div class="form-group">
+                        <label for="currentPassword">Current Password *</label>
+                        <input type="password" id="currentPassword" name="currentPassword" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="newPassword">New Password *</label>
+                        <input type="password" id="newPassword" name="newPassword" required>
+                        <div class="password-strength">
+                            <div class="strength-meter">
+                                <div class="strength-bar"></div>
+                            </div>
+                            <span class="strength-text">Password strength: <span id="strengthText">Weak</span></span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm New Password *</label>
+                        <input type="password" id="confirmPassword" name="confirmPassword" required>
+                    </div>
+                    
+                    <div class="password-requirements">
+                        <p><strong>Password must contain:</strong></p>
+                        <ul>
+                            <li id="reqLength">At least 8 characters</li>
+                            <li id="reqUppercase">One uppercase letter</li>
+                            <li id="reqLowercase">One lowercase letter</li>
+                            <li id="reqNumber">One number</li>
+                            <li id="reqSpecial">One special character</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" onclick="closeModal('changePasswordModal')">Cancel</button>
+                        <button type="submit" class="btn-primary">Change Password</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal (Same as vet) -->
+    <div id="confirmModal" class="modal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 class="modal-title" id="confirmModalTitle">Confirm Action</h3>
+                <button class="modal-close" onclick="closeModal('confirmModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="confirmation-content">
+                    <div class="confirmation-icon">
+                        <i class="fas fa-exclamation-circle"></i>
+                    </div>
+                    <p id="confirmModalMessage">Are you sure you want to perform this action?</p>
+                </div>
+                <div class="confirmation-actions">
+                    <button class="btn-secondary" id="confirmModalCancel">Cancel</button>
+                    <button class="btn-primary" id="confirmModalConfirm">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alert Modal (Same as vet) -->
+    <div id="alertModal" class="modal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 class="modal-title" id="alertModalTitle">Alert</h3>
+                <button class="modal-close" onclick="closeModal('alertModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="alert-content">
+                    <div class="alert-icon">
+                        <i class="fas fa-info-circle"></i>
+                    </div>
+                    <p id="alertModalMessage">Alert message here</p>
+                </div>
+                <div class="alert-actions">
+                    <button class="btn-primary" id="alertModalOk">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Appointment Details Modal -->
+    <div id="appointmentDetailsModal" class="modal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 class="modal-title">Appointment Details</h3>
+                <button class="modal-close" onclick="closeModal('appointmentDetailsModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Content will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Question Details Modal -->
+    <div id="questionDetailsModal" class="modal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 class="modal-title">Question Details</h3>
+                <button class="modal-close" onclick="closeModal('questionDetailsModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Content will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Animal Health Record Modal -->
+    <div id="animalHealthModal" class="modal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 class="modal-title">Animal Health Record</h3>
+                <button class="modal-close" onclick="closeModal('animalHealthModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Content will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Health Record Modal -->
+    <div id="addHealthRecordModal" class="modal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 class="modal-title">Add Health Record</h3>
+                <button class="modal-close" onclick="closeModal('addHealthRecordModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="addHealthRecordForm">
+                    <div class="form-group">
+                        <label for="healthAnimal">Animal *</label>
+                        <select id="healthAnimal" name="animalId" required>
+                            <!-- Will be populated by JavaScript -->
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="healthDate">Date *</label>
+                        <input type="date" id="healthDate" name="date" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="healthType">Record Type *</label>
+                        <select id="healthType" name="type" required>
+                            <option value="">Select type</option>
+                            <option value="vaccination">Vaccination</option>
+                            <option value="deworming">Deworming</option>
+                            <option value="treatment">Treatment</option>
+                            <option value="checkup">Routine Checkup</option>
+                            <option value="breeding">Breeding Record</option>
+                            <option value="birth">Birth Record</option>
+                            <option value="death">Death Record</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="healthDescription">Description *</label>
+                        <textarea id="healthDescription" name="description" required rows="4" placeholder="Describe the health record..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="healthVet">Veterinarian (Optional)</label>
+                        <input type="text" id="healthVet" name="vet" placeholder="Name of veterinarian">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="healthMedication">Medication/Treatment (Optional)</label>
+                        <textarea id="healthMedication" name="medication" rows="3" placeholder="Medication details, dosage, etc."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="healthNextDate">Next Due Date (Optional)</label>
+                        <input type="date" id="healthNextDate" name="nextDate">
+                        <small class="form-text">For vaccinations or follow-ups</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="healthCost">Cost (Optional)</label>
+                        <input type="number" id="healthCost" name="cost" min="0" step="0.01" placeholder="0.00">
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" onclick="closeModal('addHealthRecordModal')">Cancel</button>
+                        <button type="submit" class="btn-primary">Add Health Record</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="./advaFarm.js"></script>
+</body>
+</html>
