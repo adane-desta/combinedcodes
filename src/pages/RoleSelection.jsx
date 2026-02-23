@@ -15,8 +15,14 @@ function RoleSelection() {
   return (
     <div className={styles.container}>
       <div className={styles.content}>
+        <button 
+          className={styles.backButton}
+          onClick={() => navigate('/')}
+        >
+          ← Back to Home
+        </button>
         <div className={styles.header}>
-          <h1 className={styles.title}>Animal Health Advisory System</h1>
+          <h1 className={styles.title}>Choose Your Role</h1>
           <p className={styles.subtitle}>Connect veterinarians with farmers for better animal care</p>
         </div>
 

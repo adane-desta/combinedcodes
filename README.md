@@ -1,8 +1,24 @@
-# Animal Health Advisory System - React App
+# Animal Health Advisory - Modern React Application
 
-A complete, modern React application connecting veterinarians with farmers for animal health advisory services. Built with advanced React patterns including routing, context API, and modular component architecture.
+A complete, production-ready React application that connects veterinarians with farmers for animal health advisory services. Features a beautiful marketing landing page, role-based dashboards, and advanced React architecture.
+
+## Application Flow
+
+1. **Landing Page** (`/`) - Marketing homepage with features, pricing, and CTA
+2. **Role Selection** (`/role-selection`) - Choose Veterinarian or Farmer role
+3. **Dashboard** (`/dashboard/:role/*`) - Role-specific dashboard with nested pages
 
 ## Features
+
+### Landing Page
+- **Hero Section** - Compelling introduction with call-to-action
+- **Features Showcase** - 6 key benefits of the platform
+- **How It Works** - 3-step process explanation
+- **Role-Specific Sections** - Information for both veterinarians and farmers
+- **Pricing Plans** - Free, Professional, and Enterprise tiers
+- **CTA Section** - Conversion-focused call-to-action
+- **Responsive Footer** - Complete footer with links and information
+- **Modern Design** - Blue gradient theme with smooth animations
 
 ### Veterinarian Dashboard
 - **Appointments Management** - View, accept, and reject farmer appointments
@@ -23,41 +39,81 @@ A complete, modern React application connecting veterinarians with farmers for a
 
 ```
 src/
+├── pages/
+│   ├── Landing.jsx                  # Marketing landing page
+│   ├── Landing.module.css
+│   ├── RoleSelection.jsx            # Role selection page
+│   ├── RoleSelection.module.css
+│   ├── Dashboard.jsx                # Main dashboard router
+│   ├── NotFound.jsx                 # 404 page
+│   └── NotFound.module.css
 ├── components/
-│   ├── Common/              # Reusable components
+│   ├── Common/                      # Reusable components
 │   │   ├── PageHeader.jsx
+│   │   ├── PageHeader.module.css
 │   │   ├── Modal.jsx
+│   │   ├── Modal.module.css
 │   │   ├── StatCard.jsx
-│   │   └── *.module.css
-│   ├── Layout/              # Layout components
+│   │   └── StatCard.module.css
+│   ├── Layout/                      # Layout components
 │   │   ├── Layout.jsx
+│   │   ├── Layout.module.css
 │   │   ├── Header.jsx
+│   │   ├── Header.module.css
 │   │   ├── Sidebar.jsx
-│   │   └── *.module.css
-│   ├── Veterinarian/        # Vet-specific components
+│   │   └── Sidebar.module.css
+│   ├── Veterinarian/                # Vet-specific components
 │   │   ├── VeterinarianDashboard.jsx
+│   │   ├── VeterinarianDashboard.module.css
 │   │   ├── VetAppointments.jsx
+│   │   ├── VetAppointments.module.css
 │   │   ├── VetQuestions.jsx
+│   │   ├── VetQuestions.module.css
+│   │   ├── VetNews.jsx
+│   │   ├── VetResources.jsx
 │   │   ├── VetAccount.jsx
 │   │   └── *.module.css
-│   └── Farmer/              # Farmer-specific components
+│   └── Farmer/                      # Farmer-specific components
 │       ├── FarmerDashboard.jsx
+│       ├── FarmerDashboard.module.css
 │       ├── FarmerAnimals.jsx
+│       ├── FarmerAnimals.module.css
 │       ├── FarmerAppointments.jsx
+│       ├── FarmerAppointments.module.css
 │       ├── FarmerQuestions.jsx
+│       ├── FarmerQuestions.module.css
+│       ├── FarmerNews.jsx
 │       ├── FarmerMarket.jsx
 │       ├── FarmerAccount.jsx
 │       └── *.module.css
 ├── context/
-│   └── AppContext.jsx       # Global state management
-├── pages/
-│   ├── Dashboard.jsx        # Main dashboard page with routing
-│   ├── RoleSelection.jsx    # Role selection page
-│   └── NotFound.jsx         # 404 page
+│   └── AppContext.jsx               # Global state management
 ├── styles/
-│   └── globals.css          # Global styles and CSS variables
-├── App.jsx                  # Main app component
-└── main.jsx                 # Entry point
+│   └── globals.css                  # Global CSS variables & theme
+├── App.jsx                          # Main app with routing
+├── main.jsx                         # Vite entry point
+└── index.html                       # HTML template
+```
+
+## Routing Structure
+
+```
+/                                 → Landing page
+/role-selection                   → Role selection page
+/dashboard/veterinarian           → Vet dashboard
+  /dashboard/veterinarian/appointments  → Manage appointments
+  /dashboard/veterinarian/questions     → Answer farmer questions
+  /dashboard/veterinarian/news          → Share news & events
+  /dashboard/veterinarian/resources     → Manage resources
+  /dashboard/veterinarian/account       → Account settings
+
+/dashboard/farmer                 → Farmer dashboard
+  /dashboard/farmer/animals             → Animal management
+  /dashboard/farmer/appointments        → Book appointments
+  /dashboard/farmer/questions           → Ask questions
+  /dashboard/farmer/news                → View news
+  /dashboard/farmer/market              → Market prices
+  /dashboard/farmer/account             → Account settings
 ```
 
 ## Technology Stack
