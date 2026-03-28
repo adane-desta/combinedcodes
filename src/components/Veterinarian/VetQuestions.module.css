@@ -1,0 +1,137 @@
+.container {
+    display: flex;
+    flex-direction: column;
+}
+
+.questionsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.questionCard {
+    background-color: var(--card-bg);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    box-shadow: var(--shadow-md);
+    display: flex;
+    flex-direction: column;
+    transition: all var(--transition-base);
+}
+
+.questionCard:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
+}
+
+.cardHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    gap: 1rem;
+}
+
+.cardHeader h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: var(--radius-md);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: capitalize;
+    white-space: nowrap;
+}
+
+.badge.pending {
+    background-color: rgba(245, 158, 11, 0.1);
+    color: var(--warning-color);
+}
+
+.badge.answered {
+    background-color: rgba(16, 185, 129, 0.1);
+    color: var(--success-color);
+}
+
+.cardContent {
+    flex: 1;
+    margin-bottom: 1rem;
+}
+
+.animal {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+}
+
+.question {
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    line-height: 1.6;
+    margin-bottom: 0.75rem;
+}
+
+.date {
+    color: var(--text-light);
+    font-size: 0.75rem;
+}
+
+.answerSection {
+    background-color: var(--body-bg);
+    border-radius: var(--radius-md);
+    padding: 1rem;
+    margin-top: 1rem;
+}
+
+.answerSection h4 {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--success-color);
+    margin-bottom: 0.5rem;
+}
+
+.answer {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+.replyBtn {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.25rem;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    margin-top: auto;
+}
+
+.replyBtn:hover {
+    background-color: var(--primary-light);
+    transform: translateY(-1px);
+}
+
+.emptyMessage {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--text-secondary);
+    font-size: 1rem;
+}
+
+@media (max-width: 768px) {
+    .questionsGrid {
+        grid-template-columns: 1fr;
+    }
+}

@@ -1,0 +1,95 @@
+.container {
+    display: flex;
+    flex-direction: column;
+}
+
+.questionsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.questionCard {
+    background-color: var(--card-bg);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    box-shadow: var(--shadow-md);
+}
+
+.cardHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    gap: 1rem;
+}
+
+.cardHeader h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: var(--radius-md);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: capitalize;
+    white-space: nowrap;
+}
+
+.badge.pending {
+    background-color: rgba(245, 158, 11, 0.1);
+    color: var(--warning-color);
+}
+
+.badge.answered {
+    background-color: rgba(16, 185, 129, 0.1);
+    color: var(--success-color);
+}
+
+.category,
+.animal,
+.date {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+}
+
+.date {
+    font-size: 0.75rem;
+    color: var(--text-light);
+}
+
+.answerBox {
+    background-color: var(--body-bg);
+    border-radius: var(--radius-md);
+    padding: 1rem;
+    margin-top: 1rem;
+}
+
+.answerBox h4 {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--success-color);
+    margin-bottom: 0.5rem;
+}
+
+.answerBox p {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+.emptyMessage {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--text-secondary);
+}
+
+@media (max-width: 768px) {
+    .questionsGrid {
+        grid-template-columns: 1fr;
+    }
+}
